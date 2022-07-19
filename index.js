@@ -29,7 +29,7 @@ export default class EJSFactory {
      * @type {HTMLElement}
      * @memberof EJSFactory
      */
-    defaultContainer;
+    container;
 
     /**
      * Map of CSS classes to be used by the EJS HTML builder
@@ -53,22 +53,31 @@ export default class EJSFactory {
     hasHTML = () => { return this.HTMLstring !== null || this.HTMLstring !== undefined || this.HTMLstring !== ""; }
 
     /**
+     * HTML Builder instance
+     * @type {EJSHtmlBuilder}
+     * @memberof EJSFactory
+     */
+    HTMLBuilder;
+
+    /**
      * Constructor of the EJS class
      * @param {string | object} data JSON formatted string representing the blocks of the editor OR OutputData object from the editor 
      * @memberof EJSFactory
      */
-    constructor (data) {
-        switch (typeof data) {
-            case "string":
-                this.JSONstring = data;
-                break;
-            case "object":
-                this.JSONstring = JSON.stringify(data);
-                break;
-            default:
-                throw new Error("Invalid data type provided as source for the EJS factory");
+    constructor (data = null) {
+        if(data) {
+            switch (typeof data) {
+                case "string":
+                    this.JSON = data;
+                    break;
+                case "object":
+                    this.JSON = JSON.stringify(data);
+                    break;
+                default:
+                    throw new Error("Invalid data type provided as source for the EJS factory");
+            }
+            this.HTMLBuilder = new EJSHtmlBuilder(this.JSON);
         }
-        this.HTMLstring = EJSHtmlBuilder.JSONtoHTMLstring(this.JSONstring);
     }
 
     /**
@@ -79,26 +88,49 @@ export default class EJSFactory {
     from(data) {
         switch (typeof data) {
             case "string":
-                this.JSONstring = data;
+                this.JSON = data;
                 break;
             case "object":
-                this.JSONstring = JSON.stringify(data);
+                this.JSON = JSON.stringify(data);
                 break;
             default:
                 throw new TypeError("Invalid data type provided as source for the EJS factory");
         }
+
+        this.HTMLBuilder = new EJSHtmlBuilder(this.JSON);
         return this;
     }
 
     /**
-     * Internally build the HTML string from the JSONstring property
+     * Sets the default container to be used by the EJS HTML builder to receive the constructed HTML
+     * @param {Element} target HTML element to render the HTML content
+     */
+    to(target) {
+        this.container = target;
+    }
+
+    /**
+     * Internally build the HTML string from the JSONstring property, using the JSON property and the container property
      * @returns {void}
      * @memberof EJSFactory
      */
-    build() {
+    render() {
         if (this.hasJSON) { 
-            this.HTMLstring = EJSHtmlBuilder.JSONtoHTMLstring(this.JSONstring);
+            this.HTMLBuilder = new EJSHtmlBuilder(this.JSON);
+            this.HTML = this.HTMLBuilder.build(this.container);
         }
+    }
+
+    /**
+     * Builds the HTML string from the JSON string into an HTML element
+     * @param {object} from JSON object to be converted to HTML
+     * @param {Element} to HTML element to render the HTML content 
+     */
+    render(from, to) {
+        this.JSON = from;
+        this.container = to;
+
+        this.build();
     }
 
     /**
@@ -107,8 +139,8 @@ export default class EJSFactory {
      * @memberof EJSFactory
      */
     reset() {
-        this.HTMLstring = "";
-        this.JSONstring = "";
+        this.HTML = "";
+        this.JSON = "";
     }
 
     /**
@@ -129,9 +161,8 @@ export default class EJSFactory {
             default:
                 throw new TypeError("Invalid target element.");
         }
-        let html = EJSHtmlBuilder.JSONtoHTMLstring(json);
-        target.innerHTML = html;
-        return html;
+        HTMLBuilder= new EJSHtmlBuilder(json);
+        HTMLBuilder.build(target);
     }
 
     /**
