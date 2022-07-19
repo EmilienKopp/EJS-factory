@@ -2,7 +2,7 @@ import EJSHtmlBuilder from "./lib/ejs-html-builder.js";
 
 
 
-export default class EJSFactory {
+export class EJSFactory {
 
     /**
      * List of available Block types
