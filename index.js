@@ -1,4 +1,6 @@
 import EJSHtmlBuilder from "./lib/ejs-html-builder.js";
+import HtmlBricks  from "./lib/ejs-html-bricks.js";
+
 
 export default class EJSFactory {
 
