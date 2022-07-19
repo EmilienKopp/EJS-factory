@@ -1,6 +1,9 @@
 import EJSHtmlBuilder from "./lib/ejs-html-builder.js";
+import { SmartLogger } from "./utils/streamline";
 
-
+const LOG_LEVEL = 0;
+const TIMERS = false;
+const Logger = new SmartLogger(LOG_LEVEL, TIMERS);
 
 export default class EJSFactory {
 
@@ -112,27 +115,20 @@ export default class EJSFactory {
     }
 
     /**
-     * Internally build the HTML string from the JSONstring property, using the JSON property and the container property
-     * @returns {void}
+     * Internally build and return the HTML string from the JSONstring property, using the JSON property and the container property
+     * @returns {string}
      * @memberof EJSFactory
      */
     render() {
-        if (this.hasJSON) { 
-            this.HTMLBuilder = new EJSHtmlBuilder(this.JSON);
-            this.HTML = this.HTMLBuilder.build(this.container);
+        Logger.SmartLog(3,'***** RENDERING HTML *****');
+        
+        if(this.JSON == undefined) {
+            console.error('No JSON string provided. Please use the from() method to set the JSON string.');
+            return;
         }
-    }
-
-    /**
-     * Builds the HTML string from the JSON string into an HTML element
-     * @param {object} from JSON object to be converted to HTML
-     * @param {Element} to HTML element to render the HTML content 
-     */
-    render(from, to) {
-        this.JSON = from;
-        this.container = to;
-
-        this.build();
+        this.HTMLBuilder = new EJSHtmlBuilder(this.JSON);
+        this.HTML = this.HTMLBuilder.build();
+        return this.HTML;
     }
 
     /**
@@ -141,8 +137,8 @@ export default class EJSFactory {
      * @memberof EJSFactory
      */
     reset() {
-        this.HTML = "";
-        this.JSON = "";
+        this.HTML = undefined;
+        this.JSON = undefined;
     }
 
     /**
@@ -153,7 +149,7 @@ export default class EJSFactory {
      * @returns {string} HTML content
      * @memberof EJSFactory
      */
-    static renderHTML(json, target) {
+    static renderHTML(json, target = null) {
         switch (typeof target) {
             case "string":
                 target = document.getElementById(target);
@@ -164,7 +160,8 @@ export default class EJSFactory {
                 throw new TypeError("Invalid target element.");
         }
         var HTMLBuilder= new EJSHtmlBuilder(json);
-        HTMLBuilder.build(target);
+        target.innerHTML = HTMLBuilder.build();
+        return target.innerHTML;
     }
 
     /**
@@ -173,7 +170,7 @@ export default class EJSFactory {
      * @memberof EJSFactory
      */
     hasJSON() {
-        return this.JSONstring != null && this.JSONstring != undefined && this.JSONstring != "";
+        return (this.JSON !== null && this.JSON !== undefined);
     }
 
     /**
@@ -182,7 +179,7 @@ export default class EJSFactory {
      * @memberof EJSFactory
      */
     hasHTML() {
-        return this.HTMLstring != null && this.HTMLstring != undefined && this.HTMLstring != "";
+        return this.HTML != null && this.HTML != undefined;
     }
 
     /**

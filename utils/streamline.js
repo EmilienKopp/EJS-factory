@@ -33,3 +33,31 @@
      }
      return url;
  }
+
+
+
+export class SmartLogger {
+    constructor(logLevel, timers = false) {this.loggingLevel = logLevel; this.timers = timers;}
+
+    loggingLevel;
+    timers;
+
+    SmartLog(level, ...args) {
+        if (level <= this.loggingLevel) {
+            console.log(...args);
+        }
+    }
+
+    SmartTime( ...args) {
+        if (this.timers) console.time(...args);
+    }
+
+    SmartTimeEnd(...args) {
+        if (this.timers) console.timeEnd(...args);
+    }
+}
+
+
+
+
+
