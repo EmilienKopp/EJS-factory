@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "rebuild": "git add . && git commit -m \"chore: publish\" && git push && npm version patch && npm publish"
   },
   "keywords": [],
   "author": "",

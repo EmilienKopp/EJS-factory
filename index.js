@@ -2,7 +2,7 @@ import EJSHtmlBuilder from "./lib/ejs-html-builder.js";
 
 
 
-export class EJSFactory {
+export default class EJSFactory {
 
     /**
      * List of available Block types
@@ -163,7 +163,7 @@ export class EJSFactory {
             default:
                 throw new TypeError("Invalid target element.");
         }
-        HTMLBuilder= new EJSHtmlBuilder(json);
+        var HTMLBuilder= new EJSHtmlBuilder(json);
         HTMLBuilder.build(target);
     }
 
