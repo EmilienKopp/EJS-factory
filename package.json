@@ -9,5 +9,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@flaticon/flaticon-uicons": "^1.7.0",
+    "@fortawesome/fontawesome-free": "^6.1.1"
+  }
 }

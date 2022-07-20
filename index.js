@@ -1,3 +1,10 @@
+/**
+* @file Entry point of the EJS Factory package
+* @description Define the EJSFactory class and its methods, as a wrapper to the HtmlBuilder class, to create HTML elements from a JSON string gotten from EditorJS.
+* @author Emilien Kopp <emilien.kopp@gmail.com>
+* @copyright Feliseed Inc. 2022
+* @license ISC
+*/
 import EJSHtmlBuilder from "./lib/ejs-html-builder.js";
 import { SmartLogger } from "./utils/streamline";
 
@@ -107,24 +114,15 @@ export default class EJSFactory {
     }
 
     /**
-     * Sets the default container to be used by the EJS HTML builder to receive the constructed HTML
-     * @param {Element} target HTML element to render the HTML content
-     */
-    to(target) {
-        this.container = target;
-    }
-
-    /**
-     * Internally build and return the HTML string from the JSONstring property, using the JSON property and the container property
-     * @returns {string}
+     * Build the HTML string from the JSON string passed in the constructor or through the .from() method
+     * @returns {string} HTML string representing the blocks of the editor
      * @memberof EJSFactory
      */
     render() {
         Logger.SmartLog(3,'***** RENDERING HTML *****');
         
         if(this.JSON == undefined) {
-            console.error('No JSON string provided. Please use the from() method to set the JSON string.');
-            return;
+            throw new Error('No JSON string provided. Please use the from() method to set the JSON string.');
         }
         this.HTMLBuilder = new EJSHtmlBuilder(this.JSON);
         this.HTML = this.HTMLBuilder.build();
@@ -142,10 +140,10 @@ export default class EJSFactory {
     }
 
     /**
-     * Statically take the JSON representation of the editor and render static HTML with it in a given HTML element
+     * Statically take the JSON string of the editor and render static HTML with it in a given HTML element
      * @static
      * @param {string} data JSON formatted string
-     * @param {HTMLElement | string} element HTML element to render the HTML content or its ID
+     * @param {Element | string} target HTML element to render the HTML content, or the ID of an existing HTML element
      * @returns {string} HTML content
      * @memberof EJSFactory
      */
