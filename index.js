@@ -140,6 +140,18 @@ export default class EJSFactory {
     }
 
     /**
+     * Set Highlighter for the <code> blocks
+     * @param {string} libraryName Name of the library to use for the highlighter
+     * @param {string | null} libraryURL URL of the library to use for the highlighter
+     * @notice Indention fixer is not available for the moment.
+     * @notice The CSS <link> tags might have to be loaded separately. Support for version change to be added in the future.
+     * @notice Currently, only highlight.js is supported.
+     */
+    setHighlighter(libraryName) {
+        EJSHtmlBuilder.setHighlighterLibrary(libraryName);
+    }
+
+    /**
      * Statically take the JSON string of the editor and render static HTML with it in a given HTML element
      * @static
      * @param {string} data JSON formatted string
