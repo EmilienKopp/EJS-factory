@@ -35,7 +35,6 @@
  }
 
 
-
 export class SmartLogger {
     constructor(logLevel, timers = false) {this.loggingLevel = logLevel; this.timers = timers;}
 
