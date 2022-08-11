@@ -152,6 +152,17 @@ export default class EJSFactory {
     }
 
     /**
+     * Set the icon CSS link and append it to the head of the document.
+     * @param {string} iconCSSLink URL of the CSS file to use for the icons
+     * @returns {void}
+     * @memberof EJSFactory
+     */
+    setIcons(iconCSSLink) {
+        EJSHtmlBuilder.setIconLibrary(iconCSSLink);
+    }
+
+
+    /**
      * Statically take the JSON string of the editor and render static HTML with it in a given HTML element
      * @static
      * @param {string} data JSON formatted string

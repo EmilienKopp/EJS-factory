@@ -34,6 +34,14 @@
      return url;
  }
 
+ /**
+  * Get the extension of a file from its name
+  * @param {string} filename Name of the file
+  */
+ export function extractFileExtension(filename) {
+        return filename.split('.').pop();
+ }
+
 
 export class SmartLogger {
     constructor(logLevel, timers = false) {this.loggingLevel = logLevel; this.timers = timers;}
