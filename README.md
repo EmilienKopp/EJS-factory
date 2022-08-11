@@ -14,6 +14,7 @@ In order to render the data defined in JSON, the template defines, for each `blo
 - An HTML tag
 - A CSS class
 - A list of HTML attributes
+
 All of the above are programmatically customizable by the user of this library.
 
 ### Builder
